@@ -37,7 +37,7 @@ def register():
         user = User(email = registration_form.email.data, username = registration_form.username.data,password = registration_form.password.data)
         db.session.add(user)
         db.session.commit()
-        mail_message("Welcome to plog","email/welcome_user",user.email,user=user)
+        mail_message("Welcome to Music Lyrics","email/welcome_user",user.email,user=user)
 
         
 
