@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, abort
 from . import main
-from ..models import User, Post,Comment,Quote,Subscribe
+from ..models import User,Role
 from .forms import PostForm,CommentForm,UpdateProfile,SubscribeForm
 from .. import db
 from flask_login import login_user, logout_user, login_required, current_user
@@ -28,139 +28,139 @@ def account(uname):
 
 
 
-@main.route('/user/<uname>/update',methods = ['GET','POST'])
-@login_required
-def update_profile(uname):
-    user = User.query.filter_by(username = uname).first()
-    if user is None:
-        abort(404)
+# @main.route('/user/<uname>/update',methods = ['GET','POST'])
+# @login_required
+# def update_profile(uname):
+#     user = User.query.filter_by(username = uname).first()
+#     if user is None:
+#         abort(404)
 
-    form = UpdateProfile()
+#     form = UpdateProfile()
 
-    if form.validate_on_submit():
-        user.bio = form.bio.data
+#     if form.validate_on_submit():
+#         user.bio = form.bio.data
 
-        db.session.add(user)
-        db.session.commit()
+#         db.session.add(user)
+#         db.session.commit()
 
-        return redirect(url_for('.account',uname=user.username))
+#         return redirect(url_for('.account',uname=user.username))
 
-    return render_template('profile/update.html')
+#     return render_template('profile/update.html')
 
-@main.route('/user/<uname>/update/pic',methods= ['POST'])
-@login_required
-def update_pic(uname):
-    user = User.query.filter_by(username = uname).first()
-    if 'photo' in request.files:
-        filename = photos.save(request.files['photo'])
-        path = f'photos/{filename}'
-        user.profile_pic_path = path
-        db.session.commit()
-    return redirect(url_for('main.account',uname=uname))
+# @main.route('/user/<uname>/update/pic',methods= ['POST'])
+# @login_required
+# def update_pic(uname):
+#     user = User.query.filter_by(username = uname).first()
+#     if 'photo' in request.files:
+#         filename = photos.save(request.files['photo'])
+#         path = f'photos/{filename}'
+#         user.profile_pic_path = path
+#         db.session.commit()
+#     return redirect(url_for('main.account',uname=uname))
 
 
-@main.route('/post/<category>')
-def post(category):
+# @main.route('/post/<category>')
+# def post(category):
     
-    posts= None
-    if category == 'all':
-        posts = Post.query.order_by(Post.date.desc())
-    else :
-        posts = Post.query.filter_by(category = category).order_by(Post.date.desc()).all()
+#     posts= None
+#     if category == 'all':
+#         posts = Post.query.order_by(Post.date.desc())
+#     else :
+#         posts = Post.query.filter_by(category = category).order_by(Post.date.desc()).all()
 
-    return render_template('post.html', posts = posts,category= category ,title = category.upper())
+#     return render_template('post.html', posts = posts,category= category ,title = category.upper())
 
-@main.route('/post/<post_id>/add/comment', methods = ['GET','POST'])
-def comment(post_id):
+# @main.route('/post/<post_id>/add/comment', methods = ['GET','POST'])
+# def comment(post_id):
    
-    post = Post.query.filter_by(id = post_id).first()
-    form = CommentForm()
+#     post = Post.query.filter_by(id = post_id).first()
+#     form = CommentForm()
 
-    if form.validate_on_submit():
-        body = form.body.data
+#     if form.validate_on_submit():
+#         body = form.body.data
       
-        new_comment = Comment(body=body)
-        new_comment.save_comment()
+#         new_comment = Comment(body=body)
+#         new_comment.save_comment()
         
-        return redirect(url_for("main.show_comments",post_id = post_id))
-    return render_template("comment.html", form = form, post = post)
+#         return redirect(url_for("main.show_comments",post_id = post_id))
+#     return render_template("comment.html", form = form, post = post)
 
-@main.route('/<int:post_id>/comments')
-def show_comments(post_id):
+# @main.route('/<int:post_id>/comments')
+# def show_comments(post_id):
     
-    comments = None
+#     comments = None
 
-    post = Post.query.filter_by(id = post_id).first()
-    #comments = Post.query.filter_by(id = post_id).first()
-    comments = post.get_post_comments(post)
+#     post = Post.query.filter_by(id = post_id).first()
+#     #comments = Post.query.filter_by(id = post_id).first()
+#     comments = post.get_post_comments(post)
 
-    return render_template('show_comments.html',comments= comments,post= post)
+#     return render_template('show_comments.html',comments= comments,post= post)
 
-@main.route('/new/post/<uname>', methods = ['GET','POST'])
-@login_required
-def new_post(uname):
-    form = PostForm()
-    title = 'Express yourself'
-    user = User.query.filter_by(username = uname).first()
+# @main.route('/new/post/<uname>', methods = ['GET','POST'])
+# @login_required
+# def new_post(uname):
+#     form = PostForm()
+#     title = 'Express yourself'
+#     user = User.query.filter_by(username = uname).first()
 
-    if user is None:
-        abort(404)
+#     if user is None:
+#         abort(404)
       
-    if form.validate_on_submit():
-        title = form.title.data
-        body = form.post.data
-        category = form.category.data 
-        dateNow = datetime.datetime.now()
-        date = str(dateNow)
+#     if form.validate_on_submit():
+#         title = form.title.data
+#         body = form.post.data
+#         category = form.category.data 
+#         dateNow = datetime.datetime.now()
+#         date = str(dateNow)
     
 
-        add_post = Post(title = title,body=body,category=category,date=date)
-        add_post.save_post()
-        posts = Post.query.all()
-        return redirect(url_for('main.post',category = category ))
-    return render_template('new_post.html', form = form, title =title)
+#         add_post = Post(title = title,body=body,category=category,date=date)
+#         add_post.save_post()
+#         posts = Post.query.all()
+#         return redirect(url_for('main.post',category = category ))
+#     return render_template('new_post.html', form = form, title =title)
 
-@main.route("/delete/<post_id>", methods=['GET','POST'])
-@login_required
-def delete(post_id):
-    post = Post.query.filter_by(id = post_id).first()
-    db.session.delete(post.id)
-    db.session.commit()
-    return redirect(url_for('main.index'))
+# @main.route("/delete/<post_id>", methods=['GET','POST'])
+# @login_required
+# def delete(post_id):
+#     post = Post.query.filter_by(id = post_id).first()
+#     db.session.delete(post.id)
+#     db.session.commit()
+#     return redirect(url_for('main.index'))
 
 
-@main.route("/update/<post_id>", methods = ['GET','POST'])
-@login_required
-def update_post(post_id):
-    post = Post.query.filter_by(id = post_id).first()
-    form = PostForm()
-    if form.validate_on_submit():
-        post.title = form.title.data
-        post.post = form.post.data
-        db.session.commit()
+# @main.route("/update/<post_id>", methods = ['GET','POST'])
+# @login_required
+# def update_post(post_id):
+#     post = Post.query.filter_by(id = post_id).first()
+#     form = PostForm()
+#     if form.validate_on_submit():
+#         post.title = form.title.data
+#         post.post = form.post.data
+#         db.session.commit()
        
-        return redirect(url_for('main.index'))
-    elif request.method == 'GET':
-        form.title.data = post.title
-        form.post.data = post.body
+#         return redirect(url_for('main.index'))
+#     elif request.method == 'GET':
+#         form.title.data = post.title
+#         form.post.data = post.body
 
-    return render_template('new_post.html', title='Update Post', form=form)
+#     return render_template('new_post.html', title='Update Post', form=form)
 
 
-@main.route('/subscribe',methods=["GET","POST"])
-def subscribe():
-   form=SubscribeForm()
+# @main.route('/subscribe',methods=["GET","POST"])
+# def subscribe():
+#    form=SubscribeForm()
 
-   if form.validate_on_submit():
-       subscriber = Subscribe(name=form.name.data,email=form.email.data)
-       db.session.add(subscriber)
-       db.session.commit()
+#    if form.validate_on_submit():
+#        subscriber = Subscribe(name=form.name.data,email=form.email.data)
+#        db.session.add(subscriber)
+#        db.session.commit()
 
-       mail_message("Welcome to my-blog","email/subscribe_user",subscriber.email,subscriber=subscriber)
+#        mail_message("Welcome to my-blog","email/subscribe_user",subscriber.email,subscriber=subscriber)
 
-       return redirect(url_for('main.index'))
-       title = 'Subscribe'
-   return render_template('subscribe.html',subscribe_form=form)
+#        return redirect(url_for('main.index'))
+#        title = 'Subscribe'
+#    return render_template('subscribe.html',subscribe_form=form)
 
 
  
