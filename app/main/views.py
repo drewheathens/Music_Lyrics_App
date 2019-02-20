@@ -12,12 +12,10 @@ from ..email import mail_message
 def index():
     """View root page function that returns index page and the various news sources"""
 
-    title = 'Home- Welcome to Plog'
-    quotes = get_quotes()
-    print (quotes)
+    title = 'Home- Welcome to Music Lyrics'
     form = PostForm()
    
-    return render_template('index.html', form=form,quotes = quotes)
+    return render_template('index.html', form=form)
 
 @main.route('/user/<uname>')
 def account(uname):
