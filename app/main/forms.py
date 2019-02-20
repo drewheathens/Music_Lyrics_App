@@ -1,28 +1,29 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField,ValidationError,BooleanField
-from wtforms.validators import Required,Email,EqualTo
-from ..models import User,Post
+from wtforms import StringField,TextAreaField,SubmitField,ValidationError,SelectField
+from wtforms.validators import Required,Email
+#from .models import User
 
-class LoginForm(FlaskForm):
-    email = StringField('Your Email Address',validators=[Required(),Email()])
-    password = PasswordField('Password',validators =[Required()])
-    remember = BooleanField('Remember me')
-    submit = SubmitField('Sign In')
+class PostForm(FlaskForm):
 
-class RegistrationForm(FlaskForm):
-    email = StringField('Your Email Address',validators=[Required(),Email()])
-    username = StringField('Enter your username',validators = [Required()])
-    password = PasswordField('Password',validators = [Required(), EqualTo('password_confirm',message = 'Passwords must match')])
-    password_confirm = PasswordField('Confirm Passwords',validators = [Required()])
-    remember = BooleanField('Remember me')
-    submit = SubmitField('Sign Up')
+    title = StringField('Plog title',validators=[Required()])
+    post = TextAreaField('What is on your mind?', validators=[Required()])
+    submit = SubmitField('Publish')
+    category = SelectField(
+        "category",
+        choices=[("life", "life"),("technology","technology"),("relationships","relationships"),("general","general")],validators = [Required()]
+    )
+   
 
-    def validate_email(self,data_field):
-        if User.query.filter_by(email =data_field.data).first():
-            raise ValidationError('There is an account with that email')
+class UpdateProfile(FlaskForm):
+    bio = TextAreaField('Tell us about you.',validators = [Required()])
+    submit = SubmitField('Submit')
 
-    def validate_username(self,data_field):
-        if User.query.filter_by(username = data_field.data).first():
-            raise ValidationError('That username is taken')
+class CommentForm(FlaskForm):
+   
+    body = TextAreaField('comment', validators=[Required()])
+    submit = SubmitField('Submit')
 
-
+class SubscribeForm(FlaskForm):
+   name = StringField("Your Name")
+   email = StringField("Email")
+   submit= SubmitField('Subscribe')

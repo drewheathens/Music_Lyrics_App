@@ -3,9 +3,9 @@ class Config:
     '''
     General configuration parent class
     '''
-    API_BASE_URL = <API_BASE_URL>
+    # API_BASE_URL = <API_BASE_URL>
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://raeman94:moringaschool@localhost/pblog_practice'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://raeman94:moringaschool@localhost/lyrics'
     
 
     UPLOADED_PHOTOS_DEST ='app/static/photos'
@@ -14,7 +14,7 @@ class Config:
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
-    MAIL_PASSWORD = os.environ.get("https://github.com/raeman21/PlogMAIL_PASSWORD")
+    MAIL_PASSWORD = os.environ.get("https://github.com/raeman21/lyricsMAIL_PASSWORD")
 
 
 class ProdConfig(Config):
@@ -24,7 +24,7 @@ class ProdConfig(Config):
     Args:
         Config: The parent configuration class with General configuration settings
     '''
-    #SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
 
 class TestConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://raeman94:moringaschool@localhost/lyrics'
