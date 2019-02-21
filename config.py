@@ -4,9 +4,9 @@ class Config:
     General configuration parent class
     '''
     # API_BASE_URL = <API_BASE_URL>
-    SECRET_KEY = os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://raeman94:moringaschool@localhost/lyrics'
-    
+    SECRET_KEY = os.environ.get('SECRET_KEY') or '4456'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://lexx:Figtree101@localhost/lyrics'
+
 
     UPLOADED_PHOTOS_DEST ='app/static/photos'
     #  email configurations
@@ -44,4 +44,3 @@ config_options = {
 'production':ProdConfig,
 'test':TestConfig
 }
-       
