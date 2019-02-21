@@ -14,10 +14,10 @@ def configure_request(app):
 def search_artist(artist_name, track_name):
     search_artist_url = 'https://orion.apiseeds.com/api/music/lyric/artist{}/track{}?api_key={}'.format(api_key,artist_name,track_name)
     with urllib.request.urlopen(search_artist_url) as url:
-        search_movie_data = url.read()
-        search_movie_response = json.loads(search_artist_data)
+        search_artist_data = url.read()
+        search_artist_response = json.loads(search_artist_data)
 
-        search_movie_results = None
+        search_artist_results = None
 
         if search_artist_response['results']:
             search_artist_list = search_artist_response['results']

@@ -1,4 +1,4 @@
-#!/home/raeman94/MS-Python-Pre-work/python-project/git-collaboration/Music_Lyrics_App/virtual/bin/python3.7
+#!/home/lexx/Documents/moringa-school-projects/Music_Lyrics_App/virtual/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
